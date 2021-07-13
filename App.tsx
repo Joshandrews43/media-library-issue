@@ -1,21 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import useGetAssets from "./useGetAssets";
+import { Image, View, SafeAreaView } from "react-native";
 
-export default function App() {
+const MultiImagePicker = () => {
+  const [assets, loadMoreAssets, hasPermission] = useGetAssets();
+
+  if (!hasPermission) return null;
+
+  console.log(assets);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <SafeAreaView style={{ flex: 1, flexDirection: "row", flexWrap: "wrap" }}>
+      {assets.map((item) => (
+        <View
+          style={{
+            width: "30%",
+            height: 100,
+            marginLeft: 5,
+            marginRight: 5,
+            marginBottom: 10,
+            backgroundColor: "red",
+          }}
+        >
+          <Image
+            source={{ uri: item.uri }}
+            style={{ width: "100%", height: "100%" }}
+          />
+        </View>
+      ))}
+    </SafeAreaView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default MultiImagePicker;
